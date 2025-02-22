@@ -12,10 +12,10 @@ OBJ = finder-app/writer.o
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-    $(CC) $(CFLAGS) -o $(TARGET) $(OBJ)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ)
 
 finder-app/%.o: finder-app/%.c
-    $(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-    rm -f $(TARGET) $(OBJ)
+	rm -f $(TARGET) $(OBJ)
