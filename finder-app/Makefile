@@ -1,9 +1,10 @@
+CROSS_COMPILE ?=
 CC = $(CROSS_COMPILE)gcc
 CFLAGS = -Wall -Wextra -Werror -pedantic -std=c99
 
 TARGET = writer
-SRC = writer.c
-OBJ = writer.o
+SRC = finder-app/writer.c
+OBJ = finder-app/writer.o
 
 .PHONY: all clean
 
