@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
     if (fputs(text, fp) == EOF) {
         syslog(LOG_ERR, "Error writing to file %s: %s", filename, strerror(errno));
         fclose(fp);
-        closelog()
+        closelog();
         exit(EXIT_FAILURE);
     }
 
