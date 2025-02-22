@@ -7,9 +7,9 @@ TARGET = writer
 SRC = finder-app/writer.c
 OBJ = finder-app/writer.o
 
- .PHONY
+.PHONY: all clean
 
-all; $(TARGET)
+all: $(TARGET)
 
 $(TARGET): $(OBJ)
     $(CC) $(CFLAGS) -o $(TARGET) $(OBJ)
