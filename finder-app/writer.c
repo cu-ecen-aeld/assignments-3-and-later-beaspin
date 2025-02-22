@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
 
     syslog(LOG_DEBUG, "Writing %s to %s", text, filename);
 
-    FILE *fp = fopen(filename, "W");
+    FILE *fp = fopen(filename, "w");
     if (!fp) {
         syslog(LOG_ERR, "Error opening file %s: %s", filename, strerror(errno));
         closelog();

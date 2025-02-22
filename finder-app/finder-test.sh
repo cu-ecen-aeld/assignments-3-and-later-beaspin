@@ -4,6 +4,7 @@
 
 set -e
 set -u
+set -x
 
 SCRIPT_DIR=$(cd "$(dirname -- "$0")" && pwd)
 
@@ -57,10 +58,13 @@ make -C "$SCRIPT_DIR/.."
 
 for i in $( seq 1 $NUMFILES)
 do
-    "SCRIPT_DIR/../writer" "$WRITEDIR/${username}$i.txt" "$WRITESTR"
+    "$SCRIPT_DIR/../writer" "$WRITEDIR/${username}$i.txt" "$WRITESTR"
 done
 
-OUTPUTSTRING=$("SCRIPT_DIR/../finder.sh" "$WRITEDIR" "$WRITESTR")
+OUTPUTSTRING=$("$SCRIPT_DIR/../finder.sh" "$WRITEDIR" "$WRITESTR")
+
+echo "DEBUG: OUTPUTSTRING is: '${OUTPUTSTRING}'"
+echo "DEBUG: MATCHSTR is: '${MATCHSTR}'"
 
 # remove temporary directories
 rm -rf /tmp/aeld-data
