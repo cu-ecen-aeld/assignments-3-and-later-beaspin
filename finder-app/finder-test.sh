@@ -58,7 +58,7 @@ make -C "$SCRIPT_DIR/../finder-app"
 
 for i in $( seq 1 $NUMFILES)
 do
-    "$SCRIPT_DIR/../writer" "$WRITEDIR/${username}$i.txt" "$WRITESTR"
+    "$SCRIPT_DIR/../finder-app/writer" "$WRITEDIR/${username}$i.txt" "$WRITESTR"
 done
 
 #OUTPUTSTRING=$("$SCRIPT_DIR/../finder.sh" "$WRITEDIR" "$WRITESTR")
