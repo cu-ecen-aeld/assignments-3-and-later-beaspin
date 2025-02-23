@@ -8,13 +8,13 @@ OBJ = finder-app/writer.o
 
 .PHONY: all clean
 
-all: finder-app/$(TARGET)
+all: $(TARGET)
 
-finder-app/$(TARGET): $(OBJ)
+$(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ)
 
 finder-app/%.o: finder-app/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f finder-app/$(TARGET) $(OBJ)
+	rm -f $(TARGET) $(OBJ)
