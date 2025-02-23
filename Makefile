@@ -11,7 +11,7 @@ OBJ = finder-app/writer.o
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-	$(CC) $(CFLAGS) -o finder-app/$(TARGET) $(OBJ)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ)
 
 finder-app/%.o: finder-app/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
