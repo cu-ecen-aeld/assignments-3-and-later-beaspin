@@ -1,4 +1,4 @@
 	url = git@github.com:cu-ecen-aeld/aesd-assignments.git
 [submodule "assignment-autotest"]
 	path = assignment-autotest
-	url = git@github.com:cu-ecen-aeld/assignment-autotest.git
+	url = https://github.com/cu-ecen-aeld/assignment-autotest.git
