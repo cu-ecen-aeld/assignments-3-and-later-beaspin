@@ -1,5 +1,2 @@
-[submodule "assignment-autotest"]
-	path = assignment-autotest
-	url = https://github.com/cu-ecen-aeld/assignment-autotest.git
 [submodule "aesd-assignments"]
 	url = https://github.com/cu-ecen-aeld/aesd-assignments.git
