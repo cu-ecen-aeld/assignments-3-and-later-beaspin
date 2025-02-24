@@ -52,9 +52,7 @@ then
 	fi
 fi
 
-echo "Removing the old writer utility and compiling as a native application"
-make -C "$SCRIPT_DIR/../finder-app" clean
-make -C "$SCRIPT_DIR/../finder-app"
+# Removed the make clean and make steps
 
 for i in $( seq 1 $NUMFILES)
 do
