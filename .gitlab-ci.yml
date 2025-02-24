@@ -13,7 +13,11 @@ variables:
     # container, thanks to volume mount from config.toml
     DOCKER_TLS_CERTDIR: "/certs"
     GIT_SUBMODULE_UPDATES_FLAGS: "--jobs 4 --depth 1"
-
+before_script:
+    - echo "Setting up Git submodules..."
+    - git config --global url."https://github.com/".insteadOf "git@github.com:"
+    - git submodule sync --recursive
+    - git submodule update --init --recursive
 test:
     stage: test
     script:
@@ -24,3 +28,4 @@ test:
         paths:
             - ${CI_PROJECT_DIR}/test.sh.log
         when: always
+        expire_in: 7 days
