@@ -10,6 +10,9 @@ jobs:
         container: cuaesd/aesd-autotest:24-unit-test
         runs-on: self-hosted
         steps:
+          - name: Install SSH Client
+            run: |
+              apt-get update && apt-get install -y openssh-client
           - name: Debug SSH Installation
             run: |
               which ssh
