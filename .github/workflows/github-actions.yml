@@ -10,8 +10,14 @@ jobs:
         container: cuaesd/aesd-autotest:24-unit-test
         runs-on: self-hosted
         steps:
+          - name: Debug SSH Installation
+            run: |
+              which ssh
+              ssh -V
           - uses: actions/checkout@v2
           - name: Checkout submodules
             run : git submodule update --init --recursive
+          - name: Test SSH Connection
+            run ssh -T git@github.com || true
           - name: Run unit test
             run: ./unit-test.sh
