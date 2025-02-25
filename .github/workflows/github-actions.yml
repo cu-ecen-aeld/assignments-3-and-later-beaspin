@@ -18,6 +18,6 @@ jobs:
           - name: Checkout submodules
             run : git submodule update --init --recursive
           - name: Test SSH Connection
-            run ssh -T git@github.com || true
+            run: ssh -T git@github.com || true
           - name: Run unit test
             run: ./unit-test.sh
