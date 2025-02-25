@@ -10,23 +10,8 @@ jobs:
         container: cuaesd/aesd-autotest:24-unit-test
         runs-on: self-hosted
         steps:
-          - name: Install SSH Client
-            run: |
-              apt-get update && apt-get install -y openssh-client
-          - name: Add GitHub to known hosts
-            run: |
-              mkdir -p ~/.ssh
-              ssh-keyscan github.com >> ~/.ssh/known_hosts
-          - name: Debug SSH Installation
-            run: |
-              which ssh
-              ssh -V
           - uses: actions/checkout@v2
           - name: Checkout submodules
-            run : |
-              GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git submodule update --init --recursive
-          - name: Test SSH Connection
-            run: |
-              ssh -o StrictHostKeyChecking=no -T git@github.com || true
+            run : git submodule update --init --recursive
           - name: Run unit test
             run: ./unit-test.sh
