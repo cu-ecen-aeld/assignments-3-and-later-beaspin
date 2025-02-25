@@ -13,6 +13,7 @@ variables:
     DOCKER_TLS_CERTDIR: "/certs"
 before_script:
     - echo "Setting up Git submodules..."
+    - git config --global url."https://github.com/",insteadOf "git@github.com:"
     - git submodule sync --recursive
     - git submodule update --init --recursive
 test:
