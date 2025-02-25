@@ -13,14 +13,20 @@ jobs:
           - name: Install SSH Client
             run: |
               apt-get update && apt-get install -y openssh-client
+          - name: Add GitHub to known hosts
+            run: |
+              mkdir -p ~/.ssh
+              ssh-keyscan github.com >> ~/.ssh/known_hosts
           - name: Debug SSH Installation
             run: |
               which ssh
               ssh -V
           - uses: actions/checkout@v2
           - name: Checkout submodules
-            run : git submodule update --init --recursive
+            run : |
+              GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git submodule update --init --recursive
           - name: Test SSH Connection
-            run: ssh -T git@github.com || true
+            run: |
+              ssh -o StrictHostKeyChecking=no -T git@github.com || true
           - name: Run unit test
             run: ./unit-test.sh
