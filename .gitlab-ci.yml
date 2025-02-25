@@ -6,16 +6,13 @@ services:
 
 variables:
     GIT_SUBMODULE_STRATEGY: recursive
-    GIT_SUBMODULE_FORCE_HTTPS: "true"
     # Specify to Docker where to create the certificates, Docker will
     # create them automatically on boot, and will create
     # `/certs/client` that will be shared between the service and job
     # container, thanks to volume mount from config.toml
     DOCKER_TLS_CERTDIR: "/certs"
-    GIT_SUBMODULE_UPDATES_FLAGS: "--jobs 4 --depth 1"
 before_script:
     - echo "Setting up Git submodules..."
-    - git config --global url."https://github.com/".insteadOf "git@github.com:"
     - git submodule sync --recursive
     - git submodule update --init --recursive
 test:
