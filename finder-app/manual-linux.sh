@@ -40,7 +40,7 @@ if [ ! -e ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
     make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} dtbs
 fi
 
-cp ${OUTDIR}/linux-stable/asrch/${ARCH}/boot/Image ${OUTDIR}/
+cp ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ${OUTDIR}/
 
 echo "Creating the staging directory for the root filesystem"
 cd "$OUTDIR"
@@ -50,7 +50,7 @@ then
     sudo rm  -rf ${OUTDIR}/rootfs
 fi
 
-nkdir -p ${OUTDIR}/rootfs/{bin,sbin,etc,proc,sys,usr/bin,usr/sbin,lib,lib64,dev,home,tmp,var,root}
+mkdir -p ${OUTDIR}/rootfs/{bin,sbin,etc,proc,sys,usr/bin,usr/sbin,lib,lib64,dev,home,tmp,var,root}
 
 cd "$OUTDIR"
 if [ ! -d "${OUTDIR}/busybox" ]
@@ -68,11 +68,13 @@ make -j$(nproc) ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE}
 make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} CONFIG_PREFIX=${OUTDIR}/rootfs install
 
 echo "Library dependencies"
-SYSROOT=$(${CROSS_COMPILE}gcc --print-sysroot)
+SYSROOT=/usr/aarch64-linux-gnu
+mkdir -p ${OUTDIR}/rootfs/lib
+mkdir -p ${OUTDIR}/rootfs/lib64
 cp -a ${SYSROOT}/lib/ld-linux-aarch64.so.1 ${OUTDIR}/rootfs/lib/
-cp -a ${SYSROOT}/lib64/libm.so.6 ${OUTDIR}/rootfs/lib64/
-cp -a ${SYSROOT}/lib64/libresolv.so.2 ${OUTDIR}/rootfs/lib64/
-cp -a ${SYSROOT}/lib64/libc.so.6 ${OUTDIR}/rootfs/lib64/
+cp -a ${SYSROOT}/lib/libm.so.6 ${OUTDIR}/rootfs/lib/
+cp -a ${SYSROOT}/lib/libresolv.so.2 ${OUTDIR}/rootfs/lib/
+cp -a ${SYSROOT}/lib/libc.so.6 ${OUTDIR}/rootfs/lib/
 
 sudo mknod -m 666 ${OUTDIR}/rootfs/dev/null c 1 3
 sudo mknod -m 600 ${OUTDIR}/rootfs/dev/console c 5 1
@@ -82,7 +84,6 @@ make clean
 make CROSS_COMPILE=${CROSS_COMPILE}
 mkdir -p ${OUTDIR}/rootfs/home
 cp ${FINDER_APP_DIR}/writer ${OUTDIR}/rootfs/home/
-cp ${FINDER_APP_DIR}/finder.sh ${OUTDIR}/rootfs/home/
 cp ${FINDER_APP_DIR}/conf/username.txt ${OUTDIR}/rootfs/home/
 cp ${FINDER_APP_DIR}/conf/assignment.txt ${OUTDIR}/rootfs/home/
 cp ${FINDER_APP_DIR}/finder-test.sh ${OUTDIR}/rootfs/home/
