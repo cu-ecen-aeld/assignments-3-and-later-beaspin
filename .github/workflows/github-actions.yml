@@ -28,5 +28,11 @@ jobs:
           - uses: actions/checkout@v2
           - name: Checkout submodules
             run : git submodule update --init --recursive
+          - name: Install Dependencies
+            run : sudo apt update && sudo apt install -y gcc-aarch64-linux-gnu
+          - name: Build Kernel
+            run : ./finder-app/manual-linux.sh
+          - name: Install QMU
+            run : sudo apt update && sudo apt install -y qemu-system-aarch64
           - name: Run full test
             run: ./full-test.sh
