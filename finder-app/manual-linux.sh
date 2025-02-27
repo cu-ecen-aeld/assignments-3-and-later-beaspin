@@ -78,16 +78,13 @@ else
     echo "Error: No valid lib directory found in ${SYSROOT}"
     exit 1
 fi
-echo "Checking directories..."
-ls -ld "$ROOTFS_DIR"
-ls -ld "$ROOTFS_DIR/lib"
 
 mkdir -p "${ROOTFS_DIR}/lib"
 mkdir -p "${ROOTFS_DIR}/lib64"
 cp -a ${LIB_DIR}/ld-linux-aarch64.so.1 "${ROOTFS_DIR}/lib/"
 cp -a ${LIB_DIR}/libm.so.6 "${ROOTFS_DIR}/lib/"
 cp -a ${LIB_DIR}/libresolv.so.2 "${ROOTFS_DIR}/lib/"
-cp -a ${LIB_DIR}/libc.so.6 "${ROOTFS_DIR}lib/"
+cp -a ${LIB_DIR}/libc.so.6 "${ROOTFS_DIR}/lib/"
 
 echo "Creating device nodes..."
 sudo mknod -m 666 "${ROOTFS_DIR}/dev/null" c 1 3
