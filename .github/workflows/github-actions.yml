@@ -35,6 +35,6 @@ jobs:
           - name: Set SKIP_BUILD Variable
             run : echo "SKIP_BUILD=true" >> $GITHUB_ENV
           - name: Debug - Print SKIP_BUILD Before Running Full Test
-            run : echo "SKIP_BUILD" is set to: $SKIP_BUILD"
+            run : echo "SKIP_BUILD is set to: $SKIP_BUILD"
           - name: Run full test
             run: ./full-test.sh
