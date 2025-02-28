@@ -5,7 +5,7 @@
 set -e
 set -u
 
-OUTDIR=${1:-/tmp/aeld}
+OUTDIR=${1:-$HOME/assignments-3-and-later-beaspin}
 KERNEL_REPO=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 KERNEL_VERSION=v5.15.163
 BUSYBOX_VERSION=1_33_1
@@ -47,7 +47,7 @@ if [ ! -e ${ABS_OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
     make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} dtbs
 fi
 
-if [ -f "/tmp/aesd-autograder/linux-stable/arch/arm64/boot/Image" ]; then
+if [ -f "$HOME/assignments-3-and-later-beaspin/Image" ]; then
     echo "Kernel Image found. Copying..."
     cp /tmp/aesd-autograder/linux-stable/arch/arm64/boot/Image /tmp/aeld/Image
 else

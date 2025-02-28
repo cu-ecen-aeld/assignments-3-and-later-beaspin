@@ -4,15 +4,11 @@
 
 set -e
 
-OUTDIR=$1
+OUTDIR=${1:-$HOME/assignments-3-and-later-beaspin}
+echo "Usong output directory: ${OUTDIR}"
 
-if [ -z "${OUTDIR}" ]; then
-    OUTDIR=/tmp/aeld
-    echo "No outdir specified, using ${OUTDIR}"
-fi
-
-KERNEL_IMAGE=${OUTDIR}/Image
-INITRD_IMAGE=${OUTDIR}/initramfs.cpio.gz
+KERNEL_IMAGE=$HOME/assignments-3-and-later-beaspin/Image
+INITRD_IMAGE=$HOME/assignments-3-and-later-beaspin/initramfs.cpio.gz
 
 if [ ! -e ${KERNEL_IMAGE} ]; then
     echo "Missing kernel image at ${KERNEL_IMAGE}"
