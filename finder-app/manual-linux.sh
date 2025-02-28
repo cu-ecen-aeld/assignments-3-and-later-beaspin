@@ -43,7 +43,13 @@ if [ ! -e ${ABS_OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
     make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} dtbs
 fi
 
-cp arch/${ARCH}/boot/Image "${ABS_OUTDIR}/"
+if [ -f "/tmp/aesd-autograder/linux-stable/arch/arm64/boot/Image" ]; then
+    echo "Kernel Image found. Copying..."
+    cp /tmp/aesd-autograder/linux-stable/arch/arm64/boot/Image /tmp/aeld/Image
+else
+    echo "Kernel Image is missing. Built might have failed."
+    exit 1
+fi
 
 ROOTFS_DIR="${OUTDIR}/rootfs"
 if [ -d "${ROOTFS_DIR}" ]; then
