@@ -5,6 +5,7 @@
 set -e
 set -u
 
+
 OUTDIR=${1:-$HOME/assignments-3-and-later-beaspin}
 KERNEL_REPO=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 KERNEL_VERSION=v5.15.163
@@ -13,6 +14,7 @@ FINDER_APP_DIR=$(realpath $(dirname $0))
 ARCH=arm64
 CROSS_COMPILE=aarch64-linux-gnu-
 
+<<<<<<< HEAD
 echo "Using OUTPUT directory: ${OUTDIR}"
 ABS_OUTDIR=$(realpath "${OUTDIR}")
 
@@ -121,3 +123,63 @@ cd "${ROOTFS_DIR}"
 find . | cpio -o --format=newc | gzip > "${ABS_OUTDIR}/initramfs.cpio.gz"
 
 echo "Kernel and root filesystem build complete!"
+=======
+echo "Using output directory: ${OUTDIR}"
+ABS_OUTDIR=$(realpath "${OUTDIR}")
+
+mkdir -p "${ABS_OUTDIR}" || { echo "Failed to create output directory"; exit 1; }
+
+REQUIRED_TOOLS=("make" "gcc" "git" "wget" "tar" "${CROSS_COMPILE}gcc" "cpio")
+for tool in "${REQUIRED_TOOLS[@]}"; do
+    if ! command -v "$tool" &>/dev/null; then
+        echo "Error: $tool is not installed. Please install it and retry."
+        exit 1
+    fi
+done
+
+cd "${ABS_OUTDIR}"
+if [ ! -d "linux-stable" ]; then
+    #Clone only if the repository does not exist.
+	echo "Cloning Linux kernel source..."
+	git clone --depth 1 --single-branch --branch ${KERNEL_VERSION} ${KERNEL_REPO} linux-stable
+fi
+
+cd linux-stable
+echo "Checking out version ${KERNEL_VERSION}"
+git checkout ${KERNEL_VERSION}
+
+if [ ! -e "${ABS_OUTDIR}/linux-stable/arch/${ARCH}/boot/Image" ]; then
+    echo "Building the kernel..."
+    make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} defconfig
+    make -j$(nproc) ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} all
+    make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} dtbs
+fi
+
+cp arch/${ARCH}/boot/Image "${ABS_OUTDIR}/"
+
+ROOTFS_DIR=${ABS_OUTDIR}/rootfs"
+if [ -d "${ROOTFS_DIR}" ]; then
+    echo "Cleaning existing rootfs directory..."
+    sudo rm -rf "${ROOTFS_DIR}"
+fi
+
+mkdir -p "${ROOTFS_DIR}"/{bin,sbin,etc,proc,sys,usr/bin,usr/sbin,lib,lib64,dev,home,tmp,var,root}
+
+cd "${ABS_OUTDIR}"
+if [ ! -d "busybox" ]; then
+    echo "Cloning BusyBox..."
+    git clone git://busybox.net/busybox.git
+fi
+
+cd busybox
+git fetch --tags
+git checkout "1_${BUSYBOX_VERSION}"
+make distclean
+make defconfig
+make -j$(nproc) ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE}
+make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} CONFIG_PREFIX="${ROOTFS_DIR}" install
+
+echo "Adding library dependencies..."
+SYSROOT=$(realpath $(dirname $(command -v ${CROSS_COMPILE}gcc))/../aarch-linux-gnu)
+
+>>>>>>> 4b421a5 (update)
