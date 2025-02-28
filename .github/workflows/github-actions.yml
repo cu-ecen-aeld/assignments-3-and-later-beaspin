@@ -28,11 +28,5 @@ jobs:
           - uses: actions/checkout@v2
           - name: Checkout submodules
             run : git submodule update --init --recursive
-          - name: Install Dependencies
-            run : sudo apt update && sudo apt install -y gcc-aarch64-linux-gnu qemu-system-aarch64
-          - name: Verify Kernel version
-            run : uname -r
-          - name: Set SKIP_BUILD Variable
-            run : echo "SKIP_BUILD=true" >> $GITHUB_ENV
           - name: Run full test
             run: ./full-test.sh
