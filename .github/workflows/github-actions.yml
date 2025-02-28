@@ -28,6 +28,14 @@ jobs:
           - uses: actions/checkout@v2
           - name: Checkout submodules
             run : git submodule update --init --recursive
+          - name: Checkout Repository
+          - uses: actions/checkout@v3
+            with:
+               lfs: true
+               fetch-depth: 0
+          - name: Debug Kernel Image
+            run: |
+              ls -lah $HOME/assignments-3-and-later-beaspin/
           - name: Install Required Dependencies
             run : sudo apt update && sudo apt install -y gcc-aarch64-linux-gnu qemu-system-aarch64
           - name: Run full test
