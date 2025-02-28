@@ -25,6 +25,20 @@ for tool in "${REQUIRED_TOOLS[@]}"; do
         exit 1
     fi
 done
+if [ -f "/tmp/aeld/Image" ]; then
+     echo "Using existing kernel, skipping rebuild"
+     exit 0
+fi
+
+if [ -f "/tmp/aesd-autograder/linux-stable/arch/arm64/boot/Image" ]; then
+    echo "Found kernel Image. Copying..."
+    cp /tmp/aesd-autograder/linux-stable/arch/arm64/boot/Image /tmp/aeld/Image
+    exit 0
+elif [ -f "/tmp/aesd-autograder/Image" ]; then
+     echo "Found kernel. Copying..."
+     cp /tmp/aesd-autograder/Image /tmp/aeld/Image
+     exit 0
+fi
 
 cd "${ABS_OUTDIR}"
 if [ ! -d "linux-stable" ]; then
