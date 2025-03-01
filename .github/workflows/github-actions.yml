@@ -44,7 +44,7 @@ jobs:
               sudo apt install -y gcc-aarch64-linux-gnu qemu-system-aarch64 curl
           - name: Download Kernel Image
             run: |
-              IMAGE_URL="https://github.com/cu-ecen-aeld/assignments-3-and-later-beaspin/master/Image"
+              IMAGE_URL="https://raw.githubusercontent.com/cu-ecen-aeld/assignments-3-and-later-beaspin/master/Image"
               IMAGE_PATH="/github/home/assignments-3-and-later-beaspin/Image"
               echo "Downloading kernel image..."
               curl -L -o "$IMAGE_PATH" "IMAGE_URL"
