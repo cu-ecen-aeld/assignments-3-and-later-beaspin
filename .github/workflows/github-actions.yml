@@ -1,3 +1,4 @@
+---
 name: assignment-test
 on:
     push:
@@ -12,13 +13,13 @@ jobs:
         steps:
           - uses: actions/checkout@v2
           - name: Force Git to use HTTPS for submodules
-            run : git config --global url."https://github.com/".insteadOf "git@github.com:"
+            run: git config --global url."https://github.com/".insteadOf "git@github.com:"
           - name: Update submodules
-            run : |
+            run: |
               git submodule sync
               git submodule update --init --recursive --remote
           - name: Checkout submodules
-            run : git submodule update --init --recursive
+            run: git submodule update --init --recursive
           - name: Run unit test
             run: ./unit-test.sh
     full-test:
@@ -27,16 +28,17 @@ jobs:
         steps:
           - uses: actions/checkout@v2
           - name: Checkout submodules
-            run : git submodule update --init --recursive
+            run: git submodule update --init --recursive
           - name: Checkout Repository
           - uses: actions/checkout@v3
             with:
-               lfs: true
-               fetch-depth: 0
+              lfs: true
+              fetch-depth: 0
           - name: Debug Kernel Image
-            run: |
-              ls -lah $HOME/assignments-3-and-later-beaspin/
+            run: ls -lah $HOME/assignments-3-and-later-beaspin/
           - name: Install Required Dependencies
-            run : sudo apt update && sudo apt install -y gcc-aarch64-linux-gnu qemu-system-aarch64
+            run: |
+              sudo apt update &&
+              sudo apt install -y gcc-aarch64-linux-gnu qemu-system-aarch64
           - name: Run full test
             run: bash -x ./full-test.sh
