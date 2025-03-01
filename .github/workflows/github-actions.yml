@@ -58,7 +58,7 @@ jobs:
             run: chmod +x /github/home/assignments-3-and-later-beaspin/Image
           - name: Download Initramfs Image
             run: |
-              INITRD_URL="https://raw.githubusercontent.com/cu-ecen-aeld/assignments-3-and-later-beaspin/blob/master/initramfs.cpio.gz"
+              INITRD_URL="https://raw.githubusercontent.com/cu-ecen-aeld/assignments-3-and-later-beaspin/master/initramfs.cpio.gz"
               INITRD_PATH="/github/home/assignments-3-and-later-beaspin/initramfs.cpio.gz"
               echo "Downloading initramfs image from: $INITRD_URL"
               curl -L -o "$INITRD_PATH" "$INITRD_URL"
