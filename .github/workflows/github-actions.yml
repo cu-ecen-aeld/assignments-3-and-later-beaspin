@@ -56,5 +56,17 @@ jobs:
               fi
           - name: Set Kernel Image Permissions
             run: chmod +x /github/home/assignments-3-and-later-beaspin/Image
+          - name: Download Initramfs Image
+            run: |
+              INITRD_URL="https://raw.githubusercontent.com/cu-ecen-aeld/assignments-3-and-later-beaspin/blob/master/initramfs.cpio.gz"
+              INITRD_PATH="/github/home/assignments-3-and-later-beaspin/initramfs.cpio.gz"
+              echo "Downloading initramfs image from: $INITRD_URL"
+              curl -L -o "$INITRD_PATH" "$INITRD_URL"
+              if [ -f "$INITRD_PATH" ]; then
+                 echo "Initramfs image downloaded successfully!"
+              else
+                 echo "Initramfs image download failed"
+                 exit 1
+              fi
           - name: Run full test
             run: bash -x ./full-test.sh
