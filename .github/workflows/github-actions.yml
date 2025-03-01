@@ -41,10 +41,10 @@ jobs:
           - name: Install Required Dependencies
             run: |
               sudo apt update &&
-              sudo apt install -y gcc-aarch64-linux-gnu qemu-system-aarch64
+              sudo apt install -y gcc-aarch64-linux-gnu qemu-system-aarch64 curl
           - name: Download Kernel Image
             run: |
-              IMAGE_URL="https://github.com/cu-ecen-aeld/assignments-3-and-later-beaspin/raw/master/Image"
+              IMAGE_URL="https://github.com/cu-ecen-aeld/assignments-3-and-later-beaspin/master/Image"
               IMAGE_PATH="/github/home/assignments-3-and-later-beaspin/Image"
               echo "Downloading kernel image..."
               curl -L -o "$IMAGE_PATH" "IMAGE_URL"
@@ -54,5 +54,7 @@ jobs:
                 echo "Kernel image download failed"
                 exit 1
               fi
+          - name: Set Kernel Image Permissions
+            run: chmod +x /github/home/assignments-3-and-later-beaspin/Image
           - name: Run full test
             run: bash -x ./full-test.sh
