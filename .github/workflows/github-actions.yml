@@ -35,9 +35,24 @@ jobs:
                 echo "Removing stale git lock file..."
                 rm -f "$LOCK_FILE"
               fi
+              echo "Resetting repository to avoid conflicts..."
+              git reset --hard HEAD
+              git clean -fdx
           - name: Install Required Dependencies
             run: |
               sudo apt update &&
               sudo apt install -y gcc-aarch64-linux-gnu qemu-system-aarch64
+          - name: Download Kernel Image
+            run: |
+              IMAGE_URL="https://github.com/cu-ecen-aeld/assignments-3-and-later-beaspin/raw/master/Image"
+              IMAGE_PATH="/github/home/assignments-3-and-later-beaspin/Image"
+              echo "Downloading kernel image..."
+              curl -L -o "$IMAGE_PATH" "IMAGE_URL"
+              if [ -f "$IMAGE_PATH" ]; then
+                echo "Kernel image downloaded successfully"
+              else
+                echo "Kernel image download failed"
+                exit 1
+              fi
           - name: Run full test
             run: bash -x ./full-test.sh
