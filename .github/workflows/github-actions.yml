@@ -47,7 +47,7 @@ jobs:
               IMAGE_URL="https://raw.githubusercontent.com/cu-ecen-aeld/assignments-3-and-later-beaspin/master/Image"
               IMAGE_PATH="/github/home/assignments-3-and-later-beaspin/Image"
               echo "Downloading kernel image..."
-              curl -L -o "$IMAGE_PATH" "IMAGE_URL"
+              curl -L -o "$IMAGE_PATH" "$IMAGE_URL"
               if [ -f "$IMAGE_PATH" ]; then
                 echo "Kernel image downloaded successfully"
               else
