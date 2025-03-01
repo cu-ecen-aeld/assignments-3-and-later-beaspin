@@ -32,6 +32,13 @@ jobs:
           - uses: actions/checkout@v4
             with:
               fetch-depth: 1
+          - name: Fix Git Lock Issue
+            run: |
+              LOCK_FILE="/github/home/assignments-3-and-later-beaspin/linux-stable/.git/index.lock"
+              if [ -f "$LOCK_FILE" ]; then
+                echo "Removing stale git lock file..."
+                rm -f "$LOCK_FILE"
+              fi
           - name: Install Required Dependencies
             run: |
               sudo apt update &&
