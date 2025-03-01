@@ -28,10 +28,6 @@ jobs:
           - uses: actions/checkout@v2
           - name: Checkout submodules
             run: git submodule update --init --recursive
-          - name: Checkout Repository
-          - uses: actions/checkout@v4
-            with:
-              fetch-depth: 1
           - name: Fix Git Lock Issue
             run: |
               LOCK_FILE="/github/home/assignments-3-and-later-beaspin/linux-stable/.git/index.lock"
