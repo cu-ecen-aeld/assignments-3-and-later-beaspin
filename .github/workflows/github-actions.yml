@@ -39,4 +39,4 @@ jobs:
           - name: Install Required Dependencies
             run : sudo apt update && sudo apt install -y gcc-aarch64-linux-gnu qemu-system-aarch64
           - name: Run full test
-            run: ./full-test.sh
+            run: bash -x ./full-test.sh
