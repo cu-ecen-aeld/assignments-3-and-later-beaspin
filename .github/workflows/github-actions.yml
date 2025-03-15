@@ -10,6 +10,13 @@ jobs:
         container: cuaesd/aesd-autotest:24-assignment5
         runs-on: self-hosted
         steps:
+          - name: Forse fresh rep clone
+            run: |
+              rm -rf .git
+              git init
+              git remote add origin https://github.com/cu-ecen-aeld/assignments-3-and-later-beaspin.git
+              git fetch origin
+              git reset --hard origin/master
           - uses: actions/checkout@v2
           - name: Checkout submodules
             run : git submodule update --init --recursive
