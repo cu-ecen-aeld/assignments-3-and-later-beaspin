@@ -12,8 +12,7 @@ jobs:
         steps:
           - name: Forse fresh rep clone
             run: |
-              git rev-parse --is-inside-work-tree || git init
-              git remote set-url origin git@github.com:cu-ecen-aeld/assignments-3-and-later-beaspin.git
+              git remote set-url origin https://github.com/cu-ecen-aeld/assignments-3-and-later-beaspin.git
               git fetch origin
               git reset --hard origin/master
           - uses: actions/checkout@v2
