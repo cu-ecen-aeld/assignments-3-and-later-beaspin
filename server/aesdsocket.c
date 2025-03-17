@@ -35,24 +35,19 @@ void handle_signal(int signo) {
 	remove(FILE_PATH);
 	syslog(LOG_INFO, "File %s deleted, exiting.", FILE_PATH);
 	closelog();
-
 	exit(EXIT_SUCCESS);
 }
 
 void daemonize() {
 	pid_t pid = fork();
-
 	if (pid < 0) {
 	    syslog(LOG_ERR, "Fork failed: %s", strerror(errno));
 	    exit(EXIT_FAILURE);
 	}
 
-	if (pid > 0) {
-	    exit(EXIT_SUCCESS);
-	}
+	if (pid > 0) exit(EXIT_SUCCESS);
 
 	umask(0);
-
 	if (chdir("/") < 0) {
 	    syslog(LOG_ERR, "chdir failed: %s", strerror(errno));
 	    exit(EXIT_FAILURE);
@@ -72,9 +67,7 @@ int main(int argc, char *argv[]) {
 	ssize_t bytes_received;
 	int daemon_mode = 0;
 
-	if (argc > 1 && strcmp(argv[1], "-d") == 0) {
-	    daemon_mode = 1;
-	}
+	if (argc > 1 && strcmp(argv[1], "-d") == 0) daemon_mode = 1;
 
 	openlog("aesdsocket", LOG_PID | LOG_CONS, LOG_USER);
 	signal(SIGINT, handle_signal);
@@ -102,25 +95,23 @@ int main(int argc, char *argv[]) {
 	    return -1;
 	}
 
-	if (daemon_mode) {
-	    daemonize();
-	}
+	if (daemon_mode) daemonize();
 
 	if (listen(server_socket, 10) == -1) {
 	    syslog(LOG_ERR, "Listen failed: %s", strerror(errno));
-	    return -1;
+	    close(server_socket);
+	    return EXIT_FAILURE;
 	}
 
 	while (1) {
 	    client_socket = accept(server_socket, (struct sockaddr*)&client_addr, &client_len);
 	    if (client_socket == -1) {
 		syslog(LOG_ERR, "Accept failed: %s", strerror(errno));
-		close(client_socket);
 		continue;
 	    }
 
 	    syslog(LOG_INFO, "Accepted connection from %s", inet_ntoa(client_addr.sin_addr));
-	    int file_fd = open(FILE_PATH, O_CREAT | O_APPEND | O_WRONLY, 0644);
+	    int file_fd = open(FILE_PATH, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	    if (file_fd == -1) {
 		syslog(LOG_ERR, "Failed to open file: %s", strerror(errno));
 		close(client_socket);
@@ -130,20 +121,25 @@ int main(int argc, char *argv[]) {
 	    while ((bytes_received = recv(client_socket, buffer, BUFFER_SIZE - 1, 0)) > 0) {
 		buffer[bytes_received] = '\0';
 
-		if (bytes_received > 0 && buffer[bytes_received -1] != '\n') {
+		syslog(LOG_INFO, "Received data: %s", buffer);
+
+		if (buffer[bytes_received -1] != '\n') {
 		    if (bytes_received < BUFFER_SIZE - 1) {
 		        buffer[bytes_received] = '\n';
 		        bytes_received++;
-			buffer[bytes_received] = '\0';
 		    }
 		}
 
-		write(file_fd, buffer, bytes_received);
+		if (write(file_fd, buffer, bytes_received) != bytes_received) {
+		   syslog(LOG_ERR, "Error writing to file: %s", strerror(errno));
+		}
+		fsync(file_fd);
 
 		if (strchr(buffer, '\n')) break;
 	    }
 	    close(file_fd);
 
+	    usleep(50000);
 	    file_fd = open(FILE_PATH, O_RDONLY);
 	    if (file_fd != -1) {
 		while ((bytes_received = read(file_fd, buffer, BUFFER_SIZE)) > 0) {
@@ -156,5 +152,5 @@ int main(int argc, char *argv[]) {
 	    close(client_socket);
 	}
 
-	return 0;
+	return EXIT_SUCCESS;
 }
