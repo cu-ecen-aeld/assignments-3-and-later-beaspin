@@ -130,6 +130,7 @@ int main(int argc, char *argv[]) {
 		    }
 		}
 
+		syslog(LOG_INFO, "Writing to file: %s", buffer);
 		if (write(file_fd, buffer, bytes_received) != bytes_received) {
 		   syslog(LOG_ERR, "Error writing to file: %s", strerror(errno));
 		}
@@ -138,7 +139,7 @@ int main(int argc, char *argv[]) {
 		if (strchr(buffer, '\n')) break;
 	    }
 	    close(file_fd);
-
+	    
 	    usleep(50000);
 	    file_fd = open(FILE_PATH, O_RDONLY);
 	    if (file_fd != -1) {
