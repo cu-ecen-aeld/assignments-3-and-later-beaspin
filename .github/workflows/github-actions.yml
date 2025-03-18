@@ -14,17 +14,8 @@ jobs:
           - name: Checkout submodules
             run: git submodule update --init --recursive
           - name: Install lsb-release for debugging
-            run: sudo apt-get update && sudo apt-get install -y net-tools
-          - name: Debug Info
-            run: |
-              uname -a
-              lsb_release -a
-              gcc --version
-              valgrind --version
-              ps aux | grep aesdsocket
-              netstat -an | grep 9000
-              ls -lah /var/tmp
+            run: sudo apt-get update && sudo apt-get install -y net-tools netcat valgrind
+          - name: Build aesdsocket in Daemon mode
+            run: ./aesdsocket -d
           - name: Run full test
             run: ./full-test.sh
-          - name: Debug Logs
-            run: cat /var/log/syslog
