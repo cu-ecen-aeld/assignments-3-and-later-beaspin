@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
 	    }
 
 	    syslog(LOG_INFO, "Accepted connection from %s", inet_ntoa(client_addr.sin_addr));
-	    int file_fd = open(FILE_PATH, O_CREAT | O_RDWR | O_APPEND, 0644);
+	    int file_fd = open(FILE_PATH, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	    if (file_fd == -1) {
 		syslog(LOG_ERR, "Failed to open file: %s", strerror(errno));
 		close(client_socket);
