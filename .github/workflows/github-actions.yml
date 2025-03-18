@@ -13,9 +13,11 @@ jobs:
           - uses: actions/checkout@v2
           - name: Checkout submodules
             run: git submodule update --init --recursive
-          - name: Install lsb-release for debugging
-            run: sudo apt-get update && sudo apt-get install -y net-tools netcat valgrind
+          - name: Install dependencies
+            run: sudo apt-get update && sudo apt-get install -y net-tools netcat valgrind gcc
           - name: Build aesdsocket in Daemon mode
-            run: ./aesdsocket -d
+            run: |
+              cd server
+              ./aesdsocket -d
           - name: Run full test
             run: ./full-test.sh
