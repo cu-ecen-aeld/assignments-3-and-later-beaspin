@@ -12,9 +12,7 @@ jobs:
         steps:
           - uses: actions/checkout@v2
           - name: Checkout submodules
-            run: |
-              git submodule sync --recursive
-              git submodule update --init --recursive
+            run: git submodule update --init --recursive
           - name: Run full test
             run: ./full-test.sh
           - name: Debug Logs
