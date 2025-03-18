@@ -48,16 +48,27 @@ void daemonize() {
 	if (pid > 0) exit(EXIT_SUCCESS);
 
 	umask(0);
-	if (chdir("/") < 0) {
-	    syslog(LOG_ERR, "chdir failed: %s", strerror(errno));
+	if (setsid() < 0) {
+	    syslog(LOG_ERR, "setsid() failed: %s", strerror(errno));
 	    exit(EXIT_FAILURE);
 	}
+
+	pid = fork();
+	if (pid < 0) exit(EXIT_FAILURE);
+	if (pid > 0) exit(EXIT_SUCCESS);
+
+	chdir("/");
 
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
 	close(STDERR_FILENO);
 
+	freopen("/dev/null", "r", stdin);
+	freopen("/tmp/aesdsocket.log", "a", stdout);
+	freopen("/tmp/aesdsocket.log", "a", stderr);
+
 	openlog("aesdsocket", LOG_PID | LOG_CONS, LOG_USER);
+	syslog(LOG_INFO, "Daemon started successfully.");
 }
 
 int main(int argc, char *argv[]) {
@@ -111,7 +122,7 @@ int main(int argc, char *argv[]) {
 	    }
 
 	    syslog(LOG_INFO, "Accepted connection from %s", inet_ntoa(client_addr.sin_addr));
-	    int file_fd = open(FILE_PATH, O_CREAT | O_WRONLY | O_APPEND, 0644);
+	    int file_fd = open(FILE_PATH, O_CREAT | O_RDWR | O_APPEND, 0644);
 	    if (file_fd == -1) {
 		syslog(LOG_ERR, "Failed to open file: %s", strerror(errno));
 		close(client_socket);
