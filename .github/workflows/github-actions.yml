@@ -15,11 +15,5 @@ jobs:
             run: |
               git submodule sync --recursive
               git submodule update --init --recursive
-          - name: Install dependencies
-            run: sudo apt-get update && sudo apt-get install -y net-tools netcat
-          - name: clean
-            run: |
-              cd server
-              make clean && make
           - name: Run full test
             run: ./full-test.sh
