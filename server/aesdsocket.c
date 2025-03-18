@@ -149,14 +149,15 @@ int main(int argc, char *argv[]) {
 
 		if (strchr(buffer, '\n')) break;
 	    }
+	    fsync(file_fd);
 	    close(file_fd);
 	    
-	    usleep(50000);
 	    file_fd = open(FILE_PATH, O_RDONLY);
 	    if (file_fd != -1) {
 		while ((bytes_received = read(file_fd, buffer, BUFFER_SIZE)) > 0) {
 		    send(client_socket, buffer, bytes_received, 0);
 		}
+		fsync(file_fd);
 		close(file_fd);
 	    }
 
