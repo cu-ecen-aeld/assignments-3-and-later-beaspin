@@ -15,5 +15,10 @@ jobs:
             run: |
               git submodule sync --recursive
               git submodule update --init --recursive
+          - name: Ensure /var/tmp/ exists and is writable
+            run: |
+              sudo mkdir -p /var/tmp
+              sudo chmod 777 /var/tmp
+              ls -ld /var/tmp
           - name: Run full test
             run: ./full-test.sh
