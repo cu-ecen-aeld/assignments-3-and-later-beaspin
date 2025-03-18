@@ -10,6 +10,10 @@ jobs:
         container: cuaesd/aesd-autotest:24-assignment5
         runs-on: self-hosted
         steps:
+          - name: Ensure system dependencies are installed
+            run: |
+              apt-get update
+              apt-get install -y valgrind netcat
           - name: Forse fresh rep clone
             run: |
               git remote set-url origin https://github.com/cu-ecen-aeld/assignments-3-and-later-beaspin.git
