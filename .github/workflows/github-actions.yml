@@ -17,5 +17,3 @@ jobs:
               git submodule update --init --recursive
           - name: Run full test
             run: ./full-test.sh
-          - name: Debug Logs
-            run: cat /var/log/syslog
